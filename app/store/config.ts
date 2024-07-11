@@ -32,7 +32,7 @@ export const DEFAULT_CONFIG = {
 
   submitKey: SubmitKey.Enter,
   avatar: "1f603",
-  fontSize: 14,
+  fontSize: 15,
   theme: Theme.Auto as Theme,
   tightBorder: !!config?.isApp,
   sendPreviewBubble: true,
