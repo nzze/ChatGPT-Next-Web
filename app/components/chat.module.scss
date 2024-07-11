@@ -293,11 +293,11 @@
 }
 
 .chat-body-main-title {
-  cursor: pointer;
+  // cursor: pointer;
 
-  &:hover {
-    text-decoration: underline;
-  }
+  // &:hover {
+  //   text-decoration: underline;
+  // }
 }
 
 @media only screen and (max-width: 600px) {
@@ -612,8 +612,8 @@
   color: white;
 
   position: absolute;
-  right: 30px;
-  bottom: 32px;
+  right: 40px;
+  bottom: 40px;
 }
 
 @media only screen and (max-width: 600px) {

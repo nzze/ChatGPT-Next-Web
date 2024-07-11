@@ -17,7 +17,7 @@ import { useCommand } from "../command";
 import { showConfirm } from "./ui-lib";
 import { BUILTIN_MASK_STORE } from "../masks";
 
-function MaskItem(props: { mask: Mask; onClick?: () => void }) {
+export function MaskItem(props: { mask: Mask; onClick?: () => void }) {
   return (
     <div className={styles["mask"]} onClick={props.onClick}>
       <MaskAvatar
@@ -75,7 +75,7 @@ export function NewChat() {
   const chatStore = useChatStore();
   const maskStore = useMaskStore();
 
-  const masks = maskStore.getAll();
+  const masks = maskStore.getWithLang();
   const groups = useMaskGroup(masks);
 
   const navigate = useNavigate();
@@ -118,7 +118,7 @@ export function NewChat() {
           text={Locale.NewChat.Return}
           onClick={() => navigate(Path.Home)}
         ></IconButton>
-        {!state?.fromHome && (
+        {/* {!state?.fromHome && (
           <IconButton
             text={Locale.NewChat.NotShow}
             onClick={async () => {
@@ -130,7 +130,7 @@ export function NewChat() {
               }
             }}
           ></IconButton>
-        )}
+        )} */}
       </div>
       <div className={styles["mask-cards"]}>
         <div className={styles["mask-card"]}>
@@ -145,7 +145,7 @@ export function NewChat() {
       </div>
 
       <div className={styles["title"]}>{Locale.NewChat.Title}</div>
-      <div className={styles["sub-title"]}>{Locale.NewChat.SubTitle}</div>
+      {/* <div className={styles["sub-title"]}>{Locale.NewChat.SubTitle}</div> */}
 
       <div className={styles["actions"]}>
         {/* <IconButton

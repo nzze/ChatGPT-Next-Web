@@ -72,6 +72,10 @@ import Locale from "../locales";
 import { IconButton } from "./button";
 import styles from "./chat.module.scss";
 
+import { MaskItem } from "./new-chat";
+
+import { Mask, useMaskStore } from "../store/mask";
+
 import {
   List,
   ListItem,
@@ -89,10 +93,10 @@ import {
   REQUEST_TIMEOUT_MS,
   UNFINISHED_INPUT,
   ServiceProvider,
+  SlotID,
 } from "../constant";
 import { Avatar } from "./emoji";
 import { ContextPrompts, MaskAvatar, MaskConfig } from "./mask";
-import { useMaskStore } from "../store/mask";
 import { ChatCommandPrefix, useChatCommand, useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
@@ -507,7 +511,7 @@ export function ChatActions(props: {
 
   return (
     <div className={styles["chat-input-actions"]}>
-      {couldStop && (
+      {/* {couldStop && (
         <ChatAction
           onClick={stopAll}
           text={Locale.Chat.InputActions.Stop}
@@ -527,7 +531,7 @@ export function ChatActions(props: {
           text={Locale.Chat.InputActions.Settings}
           icon={<SettingsIcon />}
         />
-      )}
+      )} */}
 
       {showUploadImage && (
         <ChatAction
@@ -536,7 +540,7 @@ export function ChatActions(props: {
           icon={props.uploading ? <LoadingButtonIcon /> : <ImageIcon />}
         />
       )}
-      <ChatAction
+      {/* <ChatAction
         onClick={nextTheme}
         text={Locale.Chat.InputActions.Theme[theme]}
         icon={
@@ -550,7 +554,7 @@ export function ChatActions(props: {
             ) : null}
           </>
         }
-      />
+      /> */}
 
       <ChatAction
         onClick={props.showPromptHints}
@@ -558,15 +562,15 @@ export function ChatActions(props: {
         icon={<PromptIcon />}
       />
 
-      <ChatAction
+      {/* <ChatAction
         onClick={() => {
           navigate(Path.Masks);
         }}
         text={Locale.Chat.InputActions.Masks}
         icon={<MaskIcon />}
-      />
+      /> */}
 
-      <ChatAction
+      {/* <ChatAction
         text={Locale.Chat.InputActions.Clear}
         icon={<BreakIcon />}
         onClick={() => {
@@ -579,7 +583,7 @@ export function ChatActions(props: {
             }
           });
         }}
-      />
+      /> */}
 
       <ChatAction
         onClick={() => setShowModelSelector(true)}
@@ -686,6 +690,48 @@ export function EditMessageModal(props: { onClose: () => void }) {
   );
 }
 
+function useMaskGroup(masks: Mask[]) {
+  const [groups, setGroups] = useState<Mask[][]>([]);
+
+  useEffect(() => {
+    const computeGroup = () => {
+      const appBody = document.getElementById(SlotID.AppBody);
+      if (!appBody || masks.length === 0) return;
+
+      const rect = appBody.getBoundingClientRect();
+      const maxWidth = rect.width;
+      const maxHeight = rect.height * 0.6;
+      const maskItemWidth = 120;
+      const maskItemHeight = 50;
+
+      const randomMask = () => masks[Math.floor(Math.random() * masks.length)];
+      let maskIndex = 0;
+      const nextMask = () => masks[maskIndex++ % masks.length];
+
+      const rows = Math.ceil(maxHeight / maskItemHeight);
+      const cols = Math.ceil(maxWidth / maskItemWidth);
+
+      const newGroups = new Array(rows)
+        .fill(0)
+        .map((_, _i) =>
+          new Array(cols)
+            .fill(0)
+            .map((_, j) => (j < 1 || j > cols - 2 ? randomMask() : nextMask())),
+        );
+
+      setGroups(newGroups);
+    };
+
+    computeGroup();
+
+    window.addEventListener("resize", computeGroup);
+    return () => window.removeEventListener("resize", computeGroup);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return groups;
+}
+
 export function DeleteImageButton(props: { deleteImage: () => void }) {
   return (
     <div className={styles["delete-image"]} onClick={props.deleteImage}>
@@ -724,6 +770,11 @@ function _Chat() {
   const navigate = useNavigate();
   const [attachImages, setAttachImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+
+  const maskStore = useMaskStore();
+
+  const masks = maskStore.getWithLang();
+  const groups = useMaskGroup(masks);
 
   // prompt hints
   const promptStore = usePromptStore();
@@ -1081,6 +1132,22 @@ function _Chat() {
   const autoFocus = !isMobileScreen; // wont auto focus on mobile screen
   const showMaxIcon = !isMobileScreen && !clientConfig?.isApp;
 
+  const maskRef = useRef<HTMLDivElement>(null);
+
+  const startChat = (mask?: Mask) => {
+    setTimeout(() => {
+      chatStore.newSession(mask);
+      navigate(Path.Chat);
+    }, 10);
+  };
+
+  useEffect(() => {
+    if (maskRef.current) {
+      maskRef.current.scrollLeft =
+        (maskRef.current.scrollWidth - maskRef.current.clientWidth) / 2;
+    }
+  }, [groups]);
+
   useCommand({
     fill: setUserInput,
     submit: (text) => {
@@ -1256,7 +1323,7 @@ function _Chat() {
         <div className={`window-header-title ${styles["chat-body-title"]}`}>
           <div
             className={`window-header-main-title ${styles["chat-body-main-title"]}`}
-            onClickCapture={() => setIsEditingMessage(true)}
+            // onClickCapture={() => setIsEditingMessage(true)}
           >
             {!session.topic ? DEFAULT_TOPIC : session.topic}
           </div>
@@ -1265,7 +1332,7 @@ function _Chat() {
           </div>
         </div>
         <div className="window-actions">
-          {!isMobileScreen && (
+          {/* {!isMobileScreen && (
             <div className="window-action-button">
               <IconButton
                 icon={<RenameIcon />}
@@ -1273,7 +1340,7 @@ function _Chat() {
                 onClick={() => setIsEditingMessage(true)}
               />
             </div>
-          )}
+          )} */}
           <div className="window-action-button">
             <IconButton
               icon={<ExportIcon />}
@@ -1338,7 +1405,7 @@ function _Chat() {
                   <div className={styles["chat-message-header"]}>
                     <div className={styles["chat-message-avatar"]}>
                       {isUser ? (
-                        <Avatar avatar={config.avatar} />
+                        <div />
                       ) : (
                         <>
                           {["system"].includes(message.role) ? (
@@ -1465,6 +1532,20 @@ function _Chat() {
         })}
       </div>
 
+      {/* <div className={styles["masks"]} ref={maskRef}>
+        {groups.map((masks, i) => (
+          <div key={i} className={styles["mask-row"]}>
+            {masks.map((mask, index) => (
+              <MaskItem
+                key={index}
+                mask={mask}
+                onClick={() => startChat(mask)}
+              />
+            ))}
+          </div>
+        ))}
+      </div> */}
+
       <div className={styles["chat-input-panel"]}>
         <PromptHints prompts={promptHints} onPromptSelect={onPromptSelect} />
 
@@ -1500,7 +1581,7 @@ function _Chat() {
             id="chat-input"
             ref={inputRef}
             className={styles["chat-input"]}
-            placeholder={Locale.Chat.Input(submitKey)}
+            placeholder="Anything to ask?"
             onInput={(e) => onInput(e.currentTarget.value)}
             value={userInput}
             onKeyDown={onInputKeyDown}
@@ -1538,7 +1619,7 @@ function _Chat() {
           )}
           <IconButton
             icon={<SendWhiteIcon />}
-            text={Locale.Chat.Send}
+            // text={Locale.Chat.Send}
             className={styles["chat-input-send"]}
             type="primary"
             onClick={() => doSubmit(userInput)}

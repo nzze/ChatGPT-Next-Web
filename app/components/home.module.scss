@@ -136,7 +136,7 @@
 .sidebar-header {
   position: relative;
   padding-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 }
 
 .sidebar-logo {
@@ -232,13 +232,11 @@
 
 .narrow-sidebar {
   .sidebar-title,
-  .sidebar-sub-title {
-    display: none;
-  }
+  .sidebar-sub-title,
   .sidebar-logo {
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: bottom;
   }
 
   .sidebar-header-bar {

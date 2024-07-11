@@ -82,6 +82,7 @@ export const useMaskStore = createPersistStore(
       const userMasks = Object.values(get().masks).sort(
         (a, b) => b.createdAt - a.createdAt,
       );
+      console.log("[Mask] getAll", userMasks);
       const config = useAppConfig.getState();
       if (config.hideBuiltinMasks) return userMasks;
       const buildinMasks = BUILTIN_MASKS.map(
@@ -95,6 +96,30 @@ export const useMaskStore = createPersistStore(
           }) as Mask,
       );
       return userMasks.concat(buildinMasks);
+    },
+    getWithLang() {
+      const userMasks = Object.values(get().masks).sort(
+        (a, b) => b.createdAt - a.createdAt,
+      );
+      const config = useAppConfig.getState();
+      if (config.hideBuiltinMasks) return userMasks;
+      const buildinMasks = BUILTIN_MASKS.map(
+        (m) =>
+          ({
+            ...m,
+            modelConfig: {
+              ...config.modelConfig,
+              ...m.modelConfig,
+            },
+          }) as Mask,
+      );
+
+      // filter builtin masks with the same lang
+      const lang = getLang();
+      const buildinMasksWithLang = buildinMasks.filter((m) => m.lang === lang);
+
+      // console.log('[Mask] getWithLang', buildinMasksWithLang);
+      return userMasks.concat(buildinMasksWithLang);
     },
     search(text: string) {
       return Object.values(get().masks);
