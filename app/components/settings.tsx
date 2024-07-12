@@ -732,7 +732,7 @@ export function Settings() {
             </Select>
           </ListItem> */}
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.FontSize.Title}
             subTitle={Locale.Settings.FontSize.SubTitle}
           >
@@ -749,9 +749,9 @@ export function Settings() {
                 )
               }
             ></InputRange>
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.AutoGenerateTitle.Title}
             subTitle={Locale.Settings.AutoGenerateTitle.SubTitle}
           >
@@ -765,7 +765,7 @@ export function Settings() {
                 )
               }
             ></input>
-          </ListItem>
+          </ListItem> */}
 
           {/* <ListItem
             title={Locale.Settings.SendPreviewBubble.Title}
@@ -784,7 +784,7 @@ export function Settings() {
           </ListItem> */}
         </List>
 
-        <SyncItems />
+        {/* <SyncItems /> */}
 
         <List>
           <ListItem
@@ -853,7 +853,7 @@ export function Settings() {
           </ListItem>
         </List>
 
-        <List id={SlotID.CustomModel}>
+        {/* <List id={SlotID.CustomModel}>
           {showAccessCode && (
             <ListItem
               title={Locale.Settings.Access.AccessCode.Title}
@@ -1337,7 +1337,7 @@ export function Settings() {
               }
             ></input>
           </ListItem>
-        </List>
+        </List> */}
 
         <List>
           <ModelConfigList
