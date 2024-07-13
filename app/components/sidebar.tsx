@@ -164,11 +164,11 @@ export function SideBar(props: { className?: string }) {
 
       <div
         className={styles["sidebar-body"]}
-        onClick={(e) => {
-          if (e.target === e.currentTarget) {
-            navigate(Path.Home);
-          }
-        }}
+        // onClick={(e) => {
+        //   if (e.target === e.currentTarget) {
+        //     navigate(Path.Home);
+        //   }
+        // }}
       >
         <ChatList narrow={shouldNarrow} />
       </div>
