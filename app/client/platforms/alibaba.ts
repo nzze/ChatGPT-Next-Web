@@ -53,7 +53,7 @@ export class QwenApi implements LLMApi {
     let baseUrl = "";
 
     if (accessStore.useCustomConfig) {
-      baseUrl = accessStore.alibabaUrl;
+      baseUrl = "";
     }
 
     if (baseUrl.length === 0) {
