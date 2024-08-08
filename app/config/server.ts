@@ -97,7 +97,7 @@ export const getServerSideConfig = () => {
 
   const disableGPT4 = !!process.env.DISABLE_GPT4;
   let customModels = process.env.CUSTOM_MODELS ?? "";
-  let defaultModel = process.env.DEFAULT_MODEL ?? "";
+  let defaultModel = process.env.DEFAULT_MODEL ?? "gpt-4o-2024-08-06";
 
   if (disableGPT4) {
     if (customModels) customModels += ",";
@@ -111,9 +111,6 @@ export const getServerSideConfig = () => {
   const isGoogle = !!process.env.GOOGLE_API_KEY;
   const isAnthropic = !!process.env.ANTHROPIC_API_KEY;
 
-  const isBaidu = !!process.env.BAIDU_API_KEY;
-  const isBytedance = !!process.env.BYTEDANCE_API_KEY;
-  const isAlibaba = !!process.env.ALIBABA_API_KEY;
   // const apiKeyEnvVar = process.env.OPENAI_API_KEY ?? "";
   // const apiKeys = apiKeyEnvVar.split(",").map((v) => v.trim());
   // const randomIndex = Math.floor(Math.random() * apiKeys.length);
@@ -144,19 +141,6 @@ export const getServerSideConfig = () => {
     anthropicApiKey: getApiKey(process.env.ANTHROPIC_API_KEY),
     anthropicApiVersion: process.env.ANTHROPIC_API_VERSION,
     anthropicUrl: process.env.ANTHROPIC_URL,
-
-    isBaidu,
-    baiduUrl: process.env.BAIDU_URL,
-    baiduApiKey: getApiKey(process.env.BAIDU_API_KEY),
-    baiduSecretKey: process.env.BAIDU_SECRET_KEY,
-
-    isBytedance,
-    bytedanceApiKey: getApiKey(process.env.BYTEDANCE_API_KEY),
-    bytedanceUrl: process.env.BYTEDANCE_URL,
-
-    isAlibaba,
-    alibabaUrl: process.env.ALIBABA_URL,
-    alibabaApiKey: getApiKey(process.env.ALIBABA_API_KEY),
 
     gtmId: process.env.GTM_ID,
 

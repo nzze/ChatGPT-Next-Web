@@ -193,10 +193,6 @@ export function getHeaders() {
       ? accessStore.azureApiKey
       : isAnthropic
       ? accessStore.anthropicApiKey
-      : isByteDance
-      ? accessStore.bytedanceApiKey
-      : isAlibaba
-      ? accessStore.alibabaApiKey
       : accessStore.openaiApiKey;
     return {
       isGoogle,

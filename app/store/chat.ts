@@ -553,7 +553,6 @@ export const useChatStore = createPersistStore(
         const SUMMARIZE_MIN_LEN = 50;
         if (
           config.enableAutoGenerateTitle &&
-          session.topic === DEFAULT_TOPIC &&
           countMessages(messages) >= SUMMARIZE_MIN_LEN
         ) {
           const topicMessages = messages.concat(
@@ -572,7 +571,11 @@ export const useChatStore = createPersistStore(
               get().updateCurrentSession(
                 (session) =>
                   (session.topic =
-                    message.length > 0 ? trimTopic(message) : DEFAULT_TOPIC),
+                    message.length > 0
+                      ? session.mask.name !== DEFAULT_TOPIC
+                        ? session.mask.name + ": " + trimTopic(message)
+                        : trimTopic(message)
+                      : DEFAULT_TOPIC),
               );
             },
           });
