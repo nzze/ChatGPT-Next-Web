@@ -70,7 +70,7 @@ async function request(req: NextRequest) {
   // alibaba use base url or just remove the path
   let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Alibaba, "");
 
-  let baseUrl = serverConfig.alibabaUrl || ALIBABA_BASE_URL;
+  let baseUrl = ALIBABA_BASE_URL;
 
   if (!baseUrl.startsWith("http")) {
     baseUrl = `https://${baseUrl}`;

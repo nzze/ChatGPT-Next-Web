@@ -67,7 +67,7 @@ async function request(req: NextRequest) {
 
   let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.ByteDance, "");
 
-  let baseUrl = serverConfig.bytedanceUrl || BYTEDANCE_BASE_URL;
+  let baseUrl = BYTEDANCE_BASE_URL;
 
   if (!baseUrl.startsWith("http")) {
     baseUrl = `https://${baseUrl}`;
