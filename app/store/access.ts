@@ -47,19 +47,6 @@ const DEFAULT_ACCESS_STATE = {
   anthropicApiVersion: "2023-06-01",
   anthropicUrl: "",
 
-  // baidu
-  baiduUrl: "",
-  baiduApiKey: "",
-  baiduSecretKey: "",
-
-  // bytedance
-  bytedanceApiKey: "",
-  bytedanceUrl: "",
-
-  // alibaba
-  alibabaUrl: "",
-  alibabaApiKey: "",
-
   // server config
   needCode: true,
   hideUserApiKey: false,
@@ -96,18 +83,6 @@ export const useAccessStore = createPersistStore(
       return ensure(get(), ["anthropicApiKey"]);
     },
 
-    isValidBaidu() {
-      return ensure(get(), ["baiduApiKey", "baiduSecretKey"]);
-    },
-
-    isValidByteDance() {
-      return ensure(get(), ["bytedanceApiKey"]);
-    },
-
-    isValidAlibaba() {
-      return ensure(get(), ["alibabaApiKey"]);
-    },
-
     isAuthorized() {
       this.fetch();
 
@@ -117,9 +92,6 @@ export const useAccessStore = createPersistStore(
         this.isValidAzure() ||
         this.isValidGoogle() ||
         this.isValidAnthropic() ||
-        this.isValidBaidu() ||
-        this.isValidByteDance() ||
-        this.isValidAlibaba() ||
         !this.enabledAccessControl() ||
         (this.enabledAccessControl() && ensure(get(), ["accessCode"]))
       );
