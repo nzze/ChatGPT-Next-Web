@@ -31,17 +31,17 @@ async function handle(
     });
   }
 
-  if (!serverConfig.baiduApiKey || !serverConfig.baiduSecretKey) {
-    return NextResponse.json(
-      {
-        error: true,
-        message: `missing BAIDU_API_KEY or BAIDU_SECRET_KEY in server env vars`,
-      },
-      {
-        status: 401,
-      },
-    );
-  }
+  // if (!serverConfig.baiduApiKey || !serverConfig.baiduSecretKey) {
+  //   return NextResponse.json(
+  //     {
+  //       error: true,
+  //       message: `missing BAIDU_API_KEY or BAIDU_SECRET_KEY in server env vars`,
+  //     },
+  //     {
+  //       status: 401,
+  //     },
+  //   );
+  // }
 
   try {
     const response = await request(req);
@@ -79,9 +79,9 @@ export const preferredRegion = [
 async function request(req: NextRequest) {
   const controller = new AbortController();
 
-  let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Baidu, "");
+  let path = "";
 
-  let baseUrl = serverConfig.baiduUrl || BAIDU_BASE_URL;
+  let baseUrl = BAIDU_BASE_URL;
 
   if (!baseUrl.startsWith("http")) {
     baseUrl = `https://${baseUrl}`;
@@ -102,8 +102,8 @@ async function request(req: NextRequest) {
   );
 
   const { access_token } = await getAccessToken(
-    serverConfig.baiduApiKey as string,
-    serverConfig.baiduSecretKey as string,
+    "serverConfig.baiduApiKey" as string,
+    "serverConfig.baiduSecretKey" as string,
   );
   const fetchUrl = `${baseUrl}${path}?access_token=${access_token}`;
 
